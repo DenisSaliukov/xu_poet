@@ -497,6 +497,9 @@ footer {
   top: 0;
   left: 0
 }
+.gallery-section .gallery {
+  gap: 0
+}
 .content-wrapper {
   display: flex;
   flex-direction: column;
