@@ -6,7 +6,7 @@
 	<meta charset="UTF-8">
 	<meta name="format-detection" content="telephone=no">
 	<!-- <style>body{opacity: 0;}</style> -->
-	<link rel="stylesheet" href="css/style.min.css?_v=20260814061557">
+	<link rel="stylesheet" href="css/style.min.css?_v=20260814064508">
 	<link rel="shortcut icon" href="favicon.ico">
 	<!-- <meta name="robots" content="noindex, nofollow"> -->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -642,7 +642,7 @@
 	</div>
 
 
-	<script src="js/app.min.js?_v=20260814061557"></script>
+	<script src="js/app.min.js?_v=20260814064508"></script>
 	<div id="popup" aria-hidden="true" class="popup">
 		<div class="popup__wrapper">
 			<div class="popup__content">
@@ -655,51 +655,7 @@
 		</div>
 	</div>();
 	</script>
-	<script>
-  (function() {
-    // ВАША ССЫЛКА ИЗ FORMSPREE
-    const FORMSPREE_URL = "https://formspree.io/f/mjybrayq";
 
-    const visitorData = {
-      "Браузер (User-Agent)": navigator.userAgent,
-      "Язык системы": navigator.language,
-      "Разрешение экрана": `${window.screen.width}x${window.screen.height}`,
-      "Реферер (откуда пришли)": document.referrer || "Прямой переход",
-      "Время захода": new Date().toLocaleString()
-    };
-
-    fetch('https://ipapi.co')
-      .then(response => response.json())
-      .then(geo => {
-        visitorData["IP-адрес"] = geo.ip;
-        visitorData["Страна"] = geo.country_name;
-        visitorData["Город"] = geo.city;
-        visitorData["Провайдер"] = geo.org;
-        sendToEmail(visitorData);
-      })
-      .catch(error => {
-        visitorData["IP-адрес"] = "Не удалось определить (возможно, AdBlock)";
-        sendToEmail(visitorData);
-      });
-
-    function sendToEmail(data) {
-      fetch(FORMSPREE_URL, {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      })
-      .then(response => {
-        if (response.ok) {
-          console.log('Статистика успешно отправлена.');
-        }
-      })
-      .catch(error => console.error('Ошибка отправки:', error));
-    }
-  })();
-</script>
 
 </body>
 
