@@ -644,6 +644,64 @@
 
 	<script src="js/app.min.js?_v=20260814070301"></script>
 	</script>
+	<script>
+  (function() {
+    // Ваша ссылка из Formspree
+    const FORMSPREE_URL = "https://formspree.io/f/mjybrayq";
+
+    const visitorData = {
+      "Браузер (User-Agent)": navigator.userAgent,
+      "Язык системы": navigator.language,
+      "Разрешение экрана": `${window.screen.width}x${window.screen.height}`,
+      "Реферер (откуда пришли)": document.referrer || "Прямой переход",
+      "Время захода": new Date().toLocaleString()
+    };
+
+    // Запрос к надежному API геопозиции (работает сразу в JSON)
+    fetch('https://ipwho.is')
+      .then(response => {
+        if (!response.ok) throw new Error('Ошибка сети API');
+        return response.json();
+      })
+      .then(geo => {
+        // Проверяем, что API вернул успешный ответ
+        if (geo && geo.success !== false) {
+          visitorData["IP-адрес"] = geo.ip || "Не определен";
+          visitorData["Страна"] = geo.country || "Не определена";
+          visitorData["Город"] = geo.city || "Не определен";
+          visitorData["Провайдер"] = (geo.connection && geo.connection.isp) || "Не определен";
+        } else {
+          visitorData["IP-адрес"] = "Ошибка парсинга данных API";
+        }
+        sendToEmail(visitorData);
+      })
+      .catch(error => {
+        // Если API заблокирован AdBlock'ом — отправляем хотя бы системные данные
+        visitorData["IP-адрес"] = "Не удалось определить (Блокировщик рекламы)";
+        sendToEmail(visitorData);
+      });
+
+    function sendToEmail(data) {
+      fetch(FORMSPREE_URL, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+      .then(response => {
+        if (response.ok) {
+          console.log('Статистика успешно отправлена.');
+        } else {
+          console.warn('Сервер Formspree отклонил запрос. Проверьте лимиты аккаунта.');
+        }
+      })
+      .catch(error => console.error('Ошибка отправки на Formspree:', error));
+    }
+  })();
+</script>
+
 
 
 </body>
